@@ -37,10 +37,10 @@ def main(filename: str, format: str, output: str | None):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(prog='magicbyter.py',
-                                     description='Adds magic bytes to the beginning of the file to change its signature')
+                                     description='Creates a new file with the same content and specified magic bytes')
 
-    parser.add_argument('-f', '--format', help='Format to which the file should be changed', choices=list(magic_bytes.keys()), required=True)
+    parser.add_argument('-f', '--format', help='Format of the output file', choices=list(magic_bytes.keys()), required=True)
     parser.add_argument('-o', '--output', help='Output file, defaults to <filename>.<format>', required=False)
-    parser.add_argument('filename', help='File to be changed')
+    parser.add_argument('filename', help='File to be read')
     args = parser.parse_args()
     main(args.filename, args.format, args.output)
