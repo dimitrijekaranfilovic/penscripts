@@ -75,7 +75,7 @@ def combine(keyword: str, results: list[str]):
     return results
 
 
-def add_special_characters_and_numbers(results: list[str]):
+def add_special_characters_and_numbers(keyword: str, results: list[str]):
     n = len(special_characters_and_numbers)
     n_range = range(n)
     final_to_add = []
@@ -97,7 +97,7 @@ def add_special_characters_and_numbers(results: list[str]):
 def main(keyword: str):
     results = [keyword]
     combine(keyword, results)
-    add_special_characters_and_numbers(results)
+    add_special_characters_and_numbers(keyword, results)
     print('\n'.join(set(results)))
 
 
@@ -106,6 +106,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(prog='passwordvariator.py',
                                      description='Creates a list of variations of the keyword')
 
-    parser.add_argument('keyword', help='Keyword ')
+    parser.add_argument('keyword', help='Keyword')
     args = parser.parse_args()
     main(args.keyword)
