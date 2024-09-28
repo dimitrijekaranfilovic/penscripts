@@ -26,8 +26,12 @@ magic_bytes: dict[str, bytes] = {
 
 def main(filename: str, format: str, output: str | None):
     content: bytes = None
-    with open(filename, 'rb') as read_file:
-        content = read_file.read()
+    try:
+        with open(filename, 'rb') as read_file:
+            content = read_file.read()
+    except FileNotFoundError:
+        print(f"File '{filename}' not found.")
+        exit(1)
 
     new_filename = f'{filename}.{format}' if output is None else output
 
