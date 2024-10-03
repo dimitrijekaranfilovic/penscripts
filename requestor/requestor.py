@@ -2,8 +2,6 @@ import sys
 import requests
 from bs4 import BeautifulSoup, Comment
 
-ANSI_RESET = '\u001b[0m'
-ANSI_RED = '\u001b[31m'
 
 def main():
     url = sys.argv[1]
@@ -13,19 +11,24 @@ def main():
     try: 
         session = requests.Session()
         response = session.get(url)
-        page = response.text
-        bs = BeautifulSoup(page, 'html.parser')
-        comments = bs.find_all(string=lambda text: isinstance(text, Comment))
+        
+        print(f'Response status: {response.status_code} {response.reason}')
+        
+        print("== HEADERS ==")
+        sorted_headers = sorted(response.headers)
+        for header in sorted_headers:
+            print('{:40}{}'.format(header, response.headers.get(header)))
 
-        print(ANSI_RED + "## HEADERS ##\n" + ANSI_RESET)
-
-        print(f'{response.status_code} {response.reason}')
-        for header, value in response.headers.items():
-            print(f'{header}: {value}')
-
-        print('\n' + ANSI_RED + '## COMMENTS ##\n' + ANSI_RESET)
-        for comment in comments:
-            print(comment)
+        print("\n== COMMENTS ==")
+        content_type = response.headers.get('Content-Type')
+        if 'text/html' not in content_type:
+            print(f"Content-Type of the response is {content_type}, text/html is expected.")
+        else:
+            page = response.text
+            bs = BeautifulSoup(page, 'html.parser')
+            comments = bs.find_all(string=lambda text: isinstance(text, Comment))
+            for comment in comments:
+                print(comment)
 
     except Exception as ex:
         print(f'An error occurred: {repr(ex)}')
